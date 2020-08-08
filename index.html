@@ -28,6 +28,10 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
       <h1>GitHub Pages Import</h1>
+<p><a href="https://github.com/davisp/ghp-import/actions?query=workflow%3Aci"><img alt="CI status" src="https://github.com/davisp/ghp-import/workflows/CI/badge.svg" /></a>
+<a href="https://circleci.com/gh/c-w/ghp-import/tree/master"><img alt="CircleCI" src="https://circleci.com/gh/c-w/ghp-import/tree/master.svg?style=svg" /></a>
+<a href="https://travis-ci.org/c-w/ghp-import"><img alt="TravisCI" src="https://travis-ci.org/c-w/ghp-import.svg?branch=master" /></a>
+<a href="https://clewolff.visualstudio.com/ghp-import/_build/latest?definitionId=10&amp;branchName=master"><img alt="AzureDevOps" src="https://clewolff.visualstudio.com/ghp-import/_apis/build/status/c-w.ghp-import?branchName=master" /></a></p>
 <p>As part of <a href="http://www.gunicorn.com/" title="Gunicorn">gunicorn</a>, <a href="http://github.com/benoitc" title="Benoît Chesneau">Benoit Chesneau</a> and I have been
 starting to look at how to host documentation. There's the obvious method of
 using <a href="https://help.github.com/articles/post-receive-hooks" title="GitHub Post-Receive Hook">GitHub's post-receive hook</a> to trigger doc builds and rsync
@@ -41,7 +45,7 @@ turns into a head scratcher for things like <a href="http://sphinx.pocoo.org/" t
 access documentation sources and code sources at the same time.</p>
 <p>Then I stumbled across an interesting looking package called
 <a href="http://dinoboff.github.com/github-tools/" title="github-tools">github-tools</a> that looked almost like what I wanted. It was a tad
-complicated and more involved than I wanted but it gave me an idear. Why not
+complicated and more involved than I wanted but it gave me an idea. Why not
 just write a script that can copy a directory to the <code>gh-pages</code> branch of the
 repository. This saves me from even having to think about the branch and
 everything becomes magical.</p>
@@ -55,15 +59,25 @@ if you're using this script because you will lose your work.</p>
 <pre><code>Usage: ghp-import [OPTIONS] DIRECTORY
 
 Options:
-  -n              Include a .nojekyll file in the branch.
-  -m MESG         The commit message to use on the target branch.
-  -p              Push the branch to origin/{branch} after committing.
-  -r REMOTE       The name of the remote to push to. [origin]
-  -b BRANCH       Name of the branch to write to. [gh-pages]
-  -s USE_SHELL    Use the shell when invoking Git. [False]
-  -l FOLLOWLINKS  Follow symlinks when adding files. [False]
-  -h, --help  show this help message and exit
+  -n, --no-jekyll       Include a .nojekyll file in the branch.
+  -c CNAME, --cname=CNAME
+                        Write a CNAME file with the given CNAME.
+  -m MESG, --message=MESG
+                        The commit message to use on the target branch.
+  -p, --push            Push the branch to origin/{branch} after committing.
+  -x PREFIX, --prefix=PREFIX
+                        The prefix to add to each file that gets pushed to the
+                        remote. [none]
+  -f, --force           Force the push to the repository
+  -r REMOTE, --remote=REMOTE
+                        The name of the remote to push to. [origin]
+  -b BRANCH, --branch=BRANCH
+                        Name of the branch to write to. [gh-pages]
+  -s, --shell           Use the shell when invoking Git. [False]
+  -l, --follow-links    Follow symlinks when adding files. [False]
+  -h, --help            show this help message and exit
 </code></pre>
+
 <p>Its pretty simple. Inside your repository just run <code>ghp-import $DOCS_DIR</code>
 where <code>$DOCS_DIR</code> is the path to the <strong>built</strong> documentation. This will write a
 commit to your <code>gh-pages</code> branch with the current documents in it.</p>
@@ -74,6 +88,29 @@ a different remote using the <code>-r</code> flag.</p>
 organization page, which are served from the <code>master</code> branch.</p>
 <p>Some Windows users report needing to pass Git commands through the shell which can be accomplished by passing <code>-s</code>.</p>
 <p>The <code>-l</code> option will cause the import to follow symlinks for users that have odd configurations that include symlinking outside of their documentation directory.</p>
+<h2>Python Usage</h2>
+<p>You can also call ghp_import directly from your Python code as a library. The
+library has one public function <code>ghp_import.ghp_import</code>, which accepts the
+following arguments:</p>
+<ul>
+<li><code>srcdir</code>: The path to the <strong>built</strong> documentation (required).</li>
+<li><code>remote</code>: The name of the remote to push to. Default: <code>origin</code>.</li>
+<li><code>branch</code>: Name of the branch to write to. Default: <code>gh-pages</code>.</li>
+<li><code>mesg</code>: The commit message to use on the target branch. Default: <code>Update documentation</code>.</li>
+<li><code>push</code>: Push the branch to {remote}/{branch} after committing. Default: <code>False</code>.</li>
+<li><code>prefix</code>: The prefix to add to each file that gets pushed to the remote. Default: <code>None</code>.</li>
+<li><code>force</code>: Force the push to the repository. Default: <code>False</code>.</li>
+<li><code>use_shell</code>: Default: Use the shell when invoking Git. <code>False</code>.</li>
+<li><code>followlinks</code>: Follow symlinks when adding files. Default: <code>False</code>.</li>
+<li><code>cname</code>: Write a CNAME file with the given CNAME. Default: <code>None</code>.</li>
+<li><code>nojekyll</code>: Include a .nojekyll file in the branch. Default: <code>False</code>.</li>
+</ul>
+<p>With Python's current working directory (cwd) inside your repository, do the
+following:</p>
+<pre><code class="python">from ghp_import import ghp_import
+ghp_import('docs', push=True, cname='example.com')
+</code></pre>
+
 <h2>License</h2>
 <p><code>ghp-import</code> is distributed under the Tumbolia Public License. See the LICENSE
 file for more information.</p>
@@ -89,4 +126,3 @@ file for more information.</p>
     </div>
   </body>
 </html>
-
