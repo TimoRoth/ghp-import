@@ -32,6 +32,8 @@
 <a href="https://circleci.com/gh/c-w/ghp-import/tree/master"><img alt="CircleCI" src="https://circleci.com/gh/c-w/ghp-import/tree/master.svg?style=svg" /></a>
 <a href="https://travis-ci.org/c-w/ghp-import"><img alt="TravisCI" src="https://travis-ci.org/c-w/ghp-import.svg?branch=master" /></a>
 <a href="https://clewolff.visualstudio.com/ghp-import/_build/latest?definitionId=10&amp;branchName=master"><img alt="AzureDevOps" src="https://clewolff.visualstudio.com/ghp-import/_apis/build/status/c-w.ghp-import?branchName=master" /></a></p>
+<p><a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-green.svg" /></a>
+<a href="https://pypi.org/project/ghp-import/"><img alt="Version" src="https://img.shields.io/pypi/v/ghp-import.svg" /></a></p>
 <p>As part of <a href="http://www.gunicorn.com/" title="Gunicorn">gunicorn</a>, <a href="http://github.com/benoitc" title="Benoît Chesneau">Benoit Chesneau</a> and I have been
 starting to look at how to host documentation. There's the obvious method of
 using <a href="https://help.github.com/articles/post-receive-hooks" title="GitHub Post-Receive Hook">GitHub's post-receive hook</a> to trigger doc builds and rsync
@@ -110,10 +112,6 @@ following:</p>
 <pre><code class="python">from ghp_import import ghp_import
 ghp_import('docs', push=True, cname='example.com')
 </code></pre>
-
-<h2>License</h2>
-<p><code>ghp-import</code> is distributed under the Tumbolia Public License. See the LICENSE
-file for more information.</p>
       </section>
     </div>
 
